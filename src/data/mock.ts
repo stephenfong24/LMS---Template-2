@@ -1,0 +1,168 @@
+import type { DashboardStats, FinancialMetrics, SystemSettings, UnderwritingCase } from '../types';
+
+export const mockCases: UnderwritingCase[] = [
+  {
+    id: 'UW-1001',
+    companyName: 'Apex Logistics Ltd',
+    industry: 'Logistics',
+    revenue: 8200000,
+    country: 'United States',
+    policyLimit: 1500000,
+    coverageType: 'Trade Credit',
+    riskAnalysis: {
+      score: 'Medium',
+      drivers: ['Rising debt-to-equity ratio', 'Cross-border receivables concentration'],
+      explanation:
+        'Company has healthy top-line growth but moderate leverage and exposure to volatile shipping lanes.',
+    },
+    status: 'Pending Review',
+    createdAt: '2026-03-02',
+    currency: 'USD',
+  },
+  {
+    id: 'UW-1002',
+    companyName: 'NorthRiver Foods',
+    industry: 'Food Manufacturing',
+    revenue: 14500000,
+    country: 'Canada',
+    policyLimit: 2500000,
+    coverageType: 'Credit Insurance',
+    riskAnalysis: {
+      score: 'Low',
+      drivers: ['Stable operating margin', 'Diversified buyer portfolio'],
+      explanation: 'Strong liquidity and low short-term liabilities support a lower default probability.',
+    },
+    status: 'Approved',
+    createdAt: '2026-02-27',
+    currency: 'CAD',
+  },
+  {
+    id: 'UW-1003',
+    companyName: 'BluePeak Electronics',
+    industry: 'Electronics',
+    revenue: 5100000,
+    country: 'Singapore',
+    policyLimit: 1200000,
+    coverageType: 'Supplier Default',
+    riskAnalysis: {
+      score: 'High',
+      drivers: ['Declining cash conversion cycle', 'High customer concentration'],
+      explanation: 'Cash flow volatility and concentration risk materially increase expected loss.',
+    },
+    status: 'Rejected',
+    createdAt: '2026-02-21',
+    currency: 'USD',
+  },
+  {
+    id: 'UW-1004',
+    companyName: 'Meridian Health Services',
+    industry: 'Healthcare',
+    revenue: 21200000,
+    country: 'United Kingdom',
+    policyLimit: 3000000,
+    coverageType: 'Professional Liability',
+    riskAnalysis: {
+      score: 'Medium',
+      drivers: ['Regulatory claim frequency trend', 'Elevated legal cost inflation'],
+      explanation: 'Core business remains stable, though sector-specific claims inflation raises severity risk.',
+    },
+    status: 'Pending Review',
+    createdAt: '2026-03-04',
+    currency: 'GBP',
+  },
+  {
+    id: 'UW-1005',
+    companyName: 'Silverline Retail Group',
+    industry: 'Retail',
+    revenue: 9800000,
+    country: 'United States',
+    policyLimit: 1800000,
+    coverageType: 'Trade Credit',
+    riskAnalysis: {
+      score: 'Medium',
+      drivers: ['Seasonal revenue variability', 'Moderate inventory financing exposure'],
+      explanation: 'Stable turnover with moderate seasonal cash flow pressure during off-peak cycles.',
+    },
+    status: 'Pending Review',
+    createdAt: '2026-03-05',
+    currency: 'USD',
+  },
+  {
+    id: 'UW-1006',
+    companyName: 'HarborTech Components',
+    industry: 'Manufacturing',
+    revenue: 16700000,
+    country: 'Germany',
+    policyLimit: 2200000,
+    coverageType: 'Supplier Default',
+    riskAnalysis: {
+      score: 'Low',
+      drivers: ['Strong EBITDA margin trend', 'Diversified supplier base'],
+      explanation: 'Consistent profitability and diversified operations reduce expected counterparty risk.',
+    },
+    status: 'Approved',
+    createdAt: '2026-03-01',
+    currency: 'EUR',
+  },
+  {
+    id: 'UW-1007',
+    companyName: 'Orbit Pharma Distributors',
+    industry: 'Pharmaceuticals',
+    revenue: 7400000,
+    country: 'Malaysia',
+    policyLimit: 1400000,
+    coverageType: 'Credit Insurance',
+    riskAnalysis: {
+      score: 'High',
+      drivers: ['High receivables concentration', 'Delayed collections from key accounts'],
+      explanation: 'Working capital pressure and concentrated payor exposure elevate default probability.',
+    },
+    status: 'Rejected',
+    createdAt: '2026-02-26',
+    currency: 'USD',
+  },
+  {
+    id: 'UW-1008',
+    companyName: 'Evergreen Infrastructure Co',
+    industry: 'Construction',
+    revenue: 25400000,
+    country: 'Australia',
+    policyLimit: 3500000,
+    coverageType: 'Contractor Liability',
+    riskAnalysis: {
+      score: 'Medium',
+      drivers: ['Project milestone payment delays', 'Cost overrun sensitivity'],
+      explanation: 'Large backlog supports revenue visibility, but project cash timing adds moderate risk.',
+    },
+    status: 'Approved',
+    createdAt: '2026-03-03',
+    currency: 'AUD',
+  },
+];
+
+export const mockFinancialMetrics: FinancialMetrics = {
+  revenue: 12800000,
+  netProfit: 1530000,
+  debtRatio: 0.56,
+  liquidityRatio: 1.41,
+};
+
+export const defaultSettings: SystemSettings = {
+  riskThresholds: {
+    lowMax: 35,
+    mediumMax: 70,
+  },
+  defaultCurrency: 'USD',
+  underwritingFactors: {
+    debtWeight: 0.4,
+    liquidityWeight: 0.3,
+    industryRiskWeight: 0.3,
+  },
+};
+
+export const mockDashboardStats: DashboardStats = {
+  totalCases: mockCases.length,
+  pendingReview: mockCases.filter((caseItem) => caseItem.status === 'Pending Review').length,
+  approvedCases: mockCases.filter((caseItem) => caseItem.status === 'Approved').length,
+  rejectedCases: mockCases.filter((caseItem) => caseItem.status === 'Rejected').length,
+};
