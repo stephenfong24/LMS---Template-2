@@ -1413,8 +1413,10 @@ img {
 .contact-option-card {
   padding: 1.2rem;
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.94);
-  border: 1px solid rgba(219, 228, 234, 0.9);
+  background:
+    radial-gradient(circle at 18% 14%, rgba(15, 118, 110, 0.08), transparent 22%),
+    linear-gradient(180deg, rgba(243, 251, 249, 0.96), rgba(236, 248, 244, 0.92));
+  border: 1px solid rgba(176, 224, 214, 0.9);
   box-shadow: 0 14px 30px rgba(15, 23, 42, 0.06);
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
@@ -1422,7 +1424,7 @@ img {
 .contact-option-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 20px 38px rgba(15, 23, 42, 0.1);
-  border-color: rgba(15, 118, 110, 0.2);
+  border-color: rgba(15, 118, 110, 0.24);
 }
 
 .contact-option-icon {
@@ -1432,7 +1434,8 @@ img {
   align-items: center;
   justify-content: center;
   border-radius: 14px;
-  background: var(--brand-soft);
+  background: linear-gradient(180deg, rgba(208, 244, 236, 0.98), rgba(190, 236, 227, 0.9));
+  border: 1px solid rgba(15, 118, 110, 0.08);
   color: var(--brand);
   font-weight: 800;
   margin-bottom: 1rem;
