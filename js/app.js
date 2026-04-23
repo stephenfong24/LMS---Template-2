@@ -12,7 +12,9 @@
       setActiveNav();
       initLanguageSwitcher();
     });
-    var footerRequest = $("#site-footer").load("partials/footer.html");
+    var footerRequest = $("#site-footer").load("partials/footer.html", function () {
+      initTitleAnimations();
+    });
     return $.when(headerRequest, footerRequest);
   }
 
@@ -41,12 +43,23 @@
   }
 
   function initLanguageSwitcher() {
-    var $switcher = $(".language-switcher");
-    if (!$switcher.length) {
+    var $picker = $(".language-picker");
+    if (!$picker.length) {
       return;
     }
 
+    if ($picker.data("languagePickerInitialized")) {
+      return;
+    }
+
+    $picker.data("languagePickerInitialized", true);
+
+    var $trigger = $picker.find(".language-picker-trigger");
+    var $panel = $picker.find(".language-picker-panel");
+    var $backdrop = $picker.find(".language-picker-backdrop");
+    var $options = $picker.find(".language-picker-option");
     var savedLanguage = window.localStorage.getItem("siteLanguage") || "en";
+    var closeTimer = null;
 
     function getLanguageLabel(language) {
       return language === "bm" ? "Bahasa Malaysia" : "English";
@@ -54,13 +67,16 @@
 
     function applyLanguage(language, shouldPrompt) {
       var normalizedLanguage = language === "bm" ? "bm" : "en";
+      var languageLabel = normalizedLanguage === "bm" ? "BM" : "EN";
 
-      $switcher.find(".language-switcher-button").each(function () {
-        var isActive = $(this).data("language") === normalizedLanguage;
-        $(this).toggleClass("active", isActive);
-        $(this).attr("aria-pressed", isActive ? "true" : "false");
+      $options.each(function () {
+        var $option = $(this);
+        var isActive = $option.data("language") === normalizedLanguage;
+        $option.toggleClass("active", isActive);
+        $option.attr("aria-selected", isActive ? "true" : "false");
       });
 
+      $trigger.find(".language-picker-trigger-label").text(languageLabel);
       $("html").attr("lang", normalizedLanguage === "bm" ? "ms" : "en");
       $("body").attr("data-language", normalizedLanguage);
       window.localStorage.setItem("siteLanguage", normalizedLanguage);
@@ -70,12 +86,73 @@
       }
     }
 
-    applyLanguage(savedLanguage, false);
+    function openPicker() {
+      if (closeTimer) {
+        window.clearTimeout(closeTimer);
+        closeTimer = null;
+      }
 
-    $switcher.off("click.languageSwitcher").on("click.languageSwitcher", ".language-switcher-button", function () {
+      $picker.addClass("is-open");
+      $trigger.attr("aria-expanded", "true");
+      $panel.attr("aria-hidden", "false");
+      $backdrop.prop("hidden", false);
+
+      window.setTimeout(function () {
+        var $activeOption = $options.filter(".active");
+        ($activeOption.length ? $activeOption : $options.first()).trigger("focus");
+      }, 20);
+    }
+
+    function closePicker(restoreFocus) {
+      $picker.removeClass("is-open");
+      $trigger.attr("aria-expanded", "false");
+      $panel.attr("aria-hidden", "true");
+
+      if (closeTimer) {
+        window.clearTimeout(closeTimer);
+      }
+
+      closeTimer = window.setTimeout(function () {
+        $backdrop.prop("hidden", true);
+        closeTimer = null;
+      }, 220);
+
+      if (restoreFocus) {
+        $trigger.trigger("focus");
+      }
+    }
+
+    applyLanguage(savedLanguage, false);
+    $backdrop.prop("hidden", true);
+
+    $trigger.off("click.languagePicker").on("click.languagePicker", function (event) {
+      event.preventDefault();
+      if ($picker.hasClass("is-open")) {
+        closePicker(false);
+      } else {
+        openPicker();
+      }
+    });
+
+    $options.off("click.languagePicker").on("click.languagePicker", function () {
       var selectedLanguage = $(this).data("language");
       applyLanguage(selectedLanguage, true);
+      closePicker(true);
     });
+
+    $(document)
+      .off("click.languagePicker")
+      .on("click.languagePicker", function (event) {
+        if (!$(event.target).closest(".language-picker").length) {
+          closePicker(false);
+        }
+      })
+      .off("keydown.languagePicker")
+      .on("keydown.languagePicker", function (event) {
+        if (event.key === "Escape") {
+          closePicker(true);
+        }
+      });
   }
 
   function getCourses() {
@@ -346,6 +423,83 @@
       }
 
       $rating.html(starsMarkup);
+    });
+  }
+
+  function initTitleAnimations() {
+    var titleGroups = [
+      { selector: ".page-hero h1, .carousel-copy h1, .carousel-copy h2, .contact-hero-copy h1, .course-detail-hero h1, .auth-aside h1", variant: "title-reveal--hero" },
+      { selector: ".auth-form-wrap h1, .auth-form-wrap h2, .contact-info-panel h2, .contact-form-panel h2, .course-detail-section h2, .course-detail-section h3, .site-footer h3", variant: "title-reveal--section" }
+    ];
+
+    var $targets = $();
+
+    titleGroups.forEach(function (group) {
+      $(group.selector).each(function () {
+        var $title = $(this);
+        if ($title.data("titleAnimated")) {
+          return;
+        }
+
+        $title.addClass("title-reveal " + group.variant);
+        $title.data("titleAnimated", true);
+        $targets = $targets.add(this);
+      });
+    });
+
+    if (!$targets.length) {
+      return;
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      $targets.addClass("is-visible");
+      return;
+    }
+
+    var observer = new IntersectionObserver(function (entries, titleObserver) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          titleObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.25
+    });
+
+    $targets.each(function (index, element) {
+      element.style.transitionDelay = (index * 70) + "ms";
+      observer.observe(element);
+    });
+  }
+
+  function initContactSupportCards() {
+    var cards = document.querySelectorAll(".contact-option-card");
+    if (!cards.length) {
+      return;
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      cards.forEach(function (card) {
+        card.classList.add("is-visible");
+      });
+      return;
+    }
+
+    var observer = new IntersectionObserver(function (entries, supportObserver) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          supportObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.25
+    });
+
+    cards.forEach(function (card, index) {
+      card.style.transitionDelay = (index * 90) + "ms";
+      observer.observe(card);
     });
   }
 
@@ -872,5 +1026,7 @@
     initContactForm();
     initStatCounters();
     renderTestimonialStars();
+    initTitleAnimations();
+    initContactSupportCards();
   });
 })(jQuery);
