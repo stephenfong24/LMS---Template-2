@@ -2332,6 +2332,81 @@ textarea.form-control {
   margin-bottom: 0.95rem;
 }
 
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin: 1rem 0;
+  color: var(--muted);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: rgba(148, 163, 184, 0.25);
+}
+
+.auth-social-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.auth-social-btn {
+  min-height: 48px;
+  padding: 0.65rem 0.95rem;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink);
+  box-shadow: 0 12px 26px rgba(15, 23, 42, 0.08);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  font-weight: 700;
+  line-height: 1;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background-color 0.22s ease;
+}
+
+.auth-social-btn:hover,
+.auth-social-btn:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.12);
+  border-color: rgba(15, 118, 110, 0.22);
+}
+
+.auth-social-icon {
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.auth-social-icon svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.auth-social-google:hover,
+.auth-social-google:focus {
+  background: rgba(255, 255, 255, 0.98);
+}
+
+.auth-social-linkedin:hover,
+.auth-social-linkedin:focus {
+  background: rgba(241, 248, 255, 0.98);
+}
+
 .auth-form-wrap .btn-brand {
   background: linear-gradient(135deg, #0f766e 0%, #106f8d 100%);
   border-color: transparent;
@@ -2841,6 +2916,10 @@ textarea.form-control {
 
   .auth-aside p {
     max-width: none;
+  }
+
+  .auth-social-grid {
+    grid-template-columns: 1fr;
   }
 
   .testimonial-carousel {
