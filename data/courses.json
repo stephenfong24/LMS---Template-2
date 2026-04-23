@@ -98,5 +98,105 @@
       "Prioritization and roadmap planning",
       "Launch planning and stakeholder communication"
     ]
+  },
+  {
+    "id": "ai-product-playbook",
+    "title": "AI Product Playbook",
+    "category": "Product",
+    "level": "Intermediate",
+    "duration": "5 Weeks",
+    "price": 329,
+    "rating": 4.8,
+    "students": 865,
+    "image": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
+    "summary": "Learn how to ship AI-assisted features, evaluate tradeoffs, and align teams around practical product decisions.",
+    "description": "A modern product course focused on translating AI capability into customer value through strategy, experimentation, and execution.",
+    "skills": ["AI Strategy", "Product Discovery", "Experimentation", "Prioritization"],
+    "outcomes": [
+      "Identify useful AI opportunities for a product",
+      "Frame experiments around customer value",
+      "Communicate AI tradeoffs with stakeholders"
+    ],
+    "modules": [
+      "AI opportunity mapping",
+      "Feature scoping and validation",
+      "Experiment design and measurement",
+      "Product launch and stakeholder alignment"
+    ]
+  },
+  {
+    "id": "data-storytelling-essentials",
+    "title": "Data Storytelling Essentials",
+    "category": "Data",
+    "level": "Beginner",
+    "duration": "4 Weeks",
+    "price": 249,
+    "rating": 4.6,
+    "students": 720,
+    "image": "https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=1200&q=80",
+    "summary": "Turn metrics into narratives that help teams understand performance and make stronger decisions.",
+    "description": "Learn how to structure data stories, choose useful visuals, and communicate insight clearly to non-technical audiences.",
+    "skills": ["Data Visualization", "Narrative Design", "Reporting", "Insight Communication"],
+    "outcomes": [
+      "Build a story around a dashboard or report",
+      "Choose the right visual for each metric",
+      "Present data with confidence and clarity"
+    ],
+    "modules": [
+      "Story structure for data",
+      "Choosing charts and visuals",
+      "Designing executive summaries",
+      "Communicating recommendations"
+    ]
+  },
+  {
+    "id": "design-systems-foundation",
+    "title": "Design Systems Foundation",
+    "category": "Design",
+    "level": "Intermediate",
+    "duration": "6 Weeks",
+    "price": 319,
+    "rating": 4.8,
+    "students": 980,
+    "image": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80",
+    "summary": "Create scalable components, tokens, and documentation that keep product design consistent.",
+    "description": "A practical course for designers who want to build and maintain modern design systems used across product teams.",
+    "skills": ["UI Systems", "Component Design", "Tokens", "Documentation"],
+    "outcomes": [
+      "Define reusable design patterns",
+      "Document components for handoff",
+      "Improve consistency across product surfaces"
+    ],
+    "modules": [
+      "Design system principles",
+      "Component libraries and tokens",
+      "Governance and documentation",
+      "Scaling design across teams"
+    ]
+  },
+  {
+    "id": "digital-campaign-essentials",
+    "title": "Digital Campaign Essentials",
+    "category": "Marketing",
+    "level": "Beginner to Intermediate",
+    "duration": "5 Weeks",
+    "price": 279,
+    "rating": 4.7,
+    "students": 1040,
+    "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80",
+    "summary": "Plan, launch, and optimize digital campaigns across channels with a practical, performance-first approach.",
+    "description": "A compact marketing program covering campaign setup, audience targeting, creative testing, and reporting.",
+    "skills": ["Campaign Setup", "Audience Targeting", "Optimization", "Reporting"],
+    "outcomes": [
+      "Build a campaign plan from scratch",
+      "Test creative and messaging variations",
+      "Track performance and improve results"
+    ],
+    "modules": [
+      "Campaign planning and goal setting",
+      "Creative brief and channel setup",
+      "Testing and optimization",
+      "Campaign reporting and iteration"
+    ]
   }
 ]

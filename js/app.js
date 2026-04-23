@@ -351,11 +351,51 @@
 
   function initCoursesPage() {
     var listTarget = $("#courseListing");
+    var paginationTarget = $("#coursePagination");
     if (!listTarget.length) {
       return;
     }
 
     getCourses().done(function (courses) {
+      var currentPage = 1;
+      var pageSize = 4;
+
+      function buildPagination(totalPages) {
+        if (!paginationTarget.length) {
+          return;
+        }
+
+        if (totalPages <= 1) {
+          paginationTarget.empty();
+          return;
+        }
+
+        var markup = "";
+
+        markup +=
+          '<li class="page-item ' + (currentPage === 1 ? "disabled" : "") + '">' +
+            '<button class="page-link" type="button" data-page-action="prev" ' + (currentPage === 1 ? "disabled" : "") + '>Prev</button>' +
+          "</li>";
+
+        for (var i = 1; i <= totalPages; i += 1) {
+          markup +=
+            '<li class="page-item ' + (i === currentPage ? "active" : "") + '">' +
+              '<button class="page-link" type="button" data-page-number="' + i + '" ' + (i === currentPage ? 'aria-current="page"' : "") + ">" + i + "</button>" +
+            "</li>";
+        }
+
+        markup +=
+          '<li class="page-item ' + (currentPage === totalPages ? "disabled" : "") + '">' +
+            '<button class="page-link" type="button" data-page-action="next" ' + (currentPage === totalPages ? "disabled" : "") + '>Next</button>' +
+          "</li>";
+
+        paginationTarget.html(markup);
+      }
+
+      function clampPage(totalPages) {
+        currentPage = Math.min(Math.max(currentPage, 1), Math.max(totalPages, 1));
+      }
+
       function renderList() {
         var keyword = ($("#courseSearch").val() || "").toLowerCase().trim();
         var category = $(".filter-chip.active").data("categoryButton") || "";
@@ -366,18 +406,52 @@
           return keywordMatch && categoryMatch;
         });
 
-        listTarget.html(filtered.map(function (course) {
+        var totalPages = Math.ceil(filtered.length / pageSize);
+        clampPage(totalPages);
+
+        var startIndex = (currentPage - 1) * pageSize;
+        var pageItems = filtered.slice(startIndex, startIndex + pageSize);
+
+        listTarget.html(pageItems.map(function (course) {
           return createCourseCard(course);
         }).join(""));
         $("#courseEmptyState").toggleClass("d-none", filtered.length > 0);
         $("#courseCount").text(filtered.length);
+        buildPagination(totalPages);
       }
 
       renderList();
-      $("#courseSearch").on("input", renderList);
+      $("#courseSearch").on("input", function () {
+        currentPage = 1;
+        renderList();
+      });
       $(".filter-chip").on("click", function () {
         $(".filter-chip").removeClass("active");
         $(this).addClass("active");
+        currentPage = 1;
+        renderList();
+      });
+      paginationTarget.on("click", ".page-link", function () {
+        var pageNumber = $(this).data("pageNumber");
+        var action = $(this).data("pageAction");
+        var totalPages = Math.ceil(courses.filter(function (course) {
+          var keyword = ($("#courseSearch").val() || "").toLowerCase().trim();
+          var category = $(".filter-chip.active").data("categoryButton") || "";
+          var haystack = [course.title, course.category, course.summary, course.skills.join(" ")].join(" ").toLowerCase();
+          var keywordMatch = !keyword || haystack.indexOf(keyword) !== -1;
+          var categoryMatch = !category || course.category === category;
+          return keywordMatch && categoryMatch;
+        }).length / pageSize);
+
+        if (typeof pageNumber === "number") {
+          currentPage = pageNumber;
+        } else if (action === "prev") {
+          currentPage -= 1;
+        } else if (action === "next") {
+          currentPage += 1;
+        }
+
+        currentPage = Math.min(Math.max(currentPage, 1), Math.max(totalPages, 1));
         renderList();
       });
     });
